@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Outfit;
+}
+#root {
+  min-height: 100vh;
+  display: flex;
+}
+.custom-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 15px;
+  padding: 20px;
+}
+/* .result {
+  padding: 0px 5%;
+  max-height: 70vh;
+  overflow-y: scroll;
+} */
+.result::-webkit-scrollbar {
+  display: none;
+}
