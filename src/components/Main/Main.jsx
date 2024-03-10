@@ -50,6 +50,9 @@ function Main() {
             <div className="custom-grid">
               {cards.map((cardItem) => (
                 <div
+                  onClick={() => {
+                    onSent(cardItem.cardText);
+                  }}
                   className="h-[200px] max-sm:h-[150px] p-[15px]  bg-[#f0f4f9] rounded-[10px] relative cursor-pointer hover:bg-[#dfe4ea]"
                   key={cardItem.id}
                 >
@@ -88,7 +91,7 @@ function Main() {
           </div>
         )}
 
-        <div className="absolute bottom-0 max-sm:-bottom-10 w-full max-w-[900px] py-0 px-[20px] m-auto">
+        <div className="absolute bottom-0  w-full max-w-[900px] py-0 px-[20px] m-auto">
           <div className="flex items-center justify-between gap-[20px] bg-[#f0f4f9] py-[10px] px-[20px] rounded-[50px]">
             <input
               className="flex-1 bg-transparent border-none outline-none p-[8px] max-sm:p-[5px] text-[18px] max-sm:text-[12px]"
