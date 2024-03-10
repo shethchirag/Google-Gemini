@@ -5,8 +5,8 @@ import { Context } from "../../context/Context";
 function Main() {
   const {
     onSent,
-    prompt,
-    setPrompt,
+    inputPrompt,
+    setInputPrompt,
     recentPrompt,
     setRecentPrompt,
     prevPrompt,
@@ -20,12 +20,12 @@ function Main() {
   } = useContext(Context);
 
   const onSubmitHandler = (e) => {
-    setPrompt(e.target.value);
+    setInputPrompt(e.target.value);
   };
 
   const onButtonClickHandler = (inputIconSrc) => {
     if (inputIconSrc === assets.send_icon) {
-      onSent(prompt);
+      onSent();
     }
   };
 
@@ -39,7 +39,7 @@ function Main() {
         {!showResult ? (
           <>
             {" "}
-            <div className="mx-[50px] my-0 text-[56px] text-[#c4c7c5] font-medium p-5">
+            <div className="mx-[50px] my-0 text-[56px] max-sm:text-[30px] text-[#c4c7c5] font-medium p-5">
               <p>
                 <span className="bg-gradient-to-br from-blue-500 to-red-500 text-transparent bg-clip-text">
                   Hello, chirag.
@@ -50,10 +50,10 @@ function Main() {
             <div className="custom-grid">
               {cards.map((cardItem) => (
                 <div
-                  className="h-[200px] p-[15px] bg-[#f0f4f9] rounded-[10px] relative cursor-pointer hover:bg-[#dfe4ea]"
+                  className="h-[200px] max-sm:h-[150px] p-[15px]  bg-[#f0f4f9] rounded-[10px] relative cursor-pointer hover:bg-[#dfe4ea]"
                   key={cardItem.id}
                 >
-                  <p className="text-[#585858] text-[17px]">
+                  <p className="text-[#585858] text-[17px] max-sm:text-[15px]">
                     {cardItem.cardText}
                   </p>
                   <img
@@ -65,32 +65,52 @@ function Main() {
             </div>
           </>
         ) : (
-          <div className="py-[5%] px-0 max-h-[70vh] overflow-y-scroll result">
-            <div>
-              <img src={assets.user_icon} />
+          <div className="px-[5%] py-0 max-h-[70vh] overflow-y-scroll result">
+            <div className="flex items-center gap-[20px] py-[40px] px-0">
+              <img className="w-[40px] rounded-full" src={assets.user_icon} />
               <p>{recentPrompt}</p>
             </div>
-            <div>
-              <img src={assets.gemini_icon} />
-              <p dangerouslySetInnerHTML={{ __html: resultData }}></p>
+            <div className="flex items-start gap-[20px]">
+              <img className="w-[40px]" src={assets.gemini_icon} />
+              {loading ? (
+                <div className="w-full flex flex-col gap-[10px]">
+                  <hr className="rounded-md bg-gradient-to-r from-blue-300 via-white to-blue-300 bg-gray-100 h-[20px] loader" />
+                  <hr className="rounded-md bg-gradient-to-r from-blue-300 via-white to-blue-300 bg-gray-100 h-[20px] loader" />
+                  <hr className="rounded-md bg-gradient-to-r from-blue-300 via-white to-blue-300 bg-gray-100 h-[20px] loader" />
+                </div>
+              ) : (
+                <p
+                  className="text-[17px] font-light leading-[1.8]"
+                  dangerouslySetInnerHTML={{ __html: resultData }}
+                ></p>
+              )}
             </div>
           </div>
         )}
 
-        <div className="absolute bottom-0 w-full max-w-[900px] py-0 px-[20px] m-auto">
+        <div className="absolute bottom-0 max-sm:-bottom-10 w-full max-w-[900px] py-0 px-[20px] m-auto">
           <div className="flex items-center justify-between gap-[20px] bg-[#f0f4f9] py-[10px] px-[20px] rounded-[50px]">
             <input
-              className="flex-1 bg-transparent border-none outline-none p-[8px] text-[18px]"
+              className="flex-1 bg-transparent border-none outline-none p-[8px] max-sm:p-[5px] text-[18px] max-sm:text-[12px]"
               type="text"
               placeholder="Enter a prompt here"
               onChange={onSubmitHandler}
-              value={prompt}
+              value={inputPrompt}
+              onKeyUp={(e) => {
+                if (e.key === "Enter") {
+                  onSent();
+                }
+              }}
             />
-            <div className="flex items-center gap-[15px]">
+            <div className="flex items-center gap-[15px] max-sm:gap-2">
               {searchBoxIcon.map((icon) => (
                 <img
                   onClick={() => onButtonClickHandler(icon.inputIconSrc)}
-                  className="w-[24px] cursor-pointer"
+                  className={`w-[24px] max-sm:w-[14px] cursor-pointer ${
+                    inputPrompt === "" && icon.inputIconSrc === assets.send_icon
+                      ? "hidden"
+                      : ""
+                  }`}
                   key={icon.id}
                   src={icon.inputIconSrc}
                 />

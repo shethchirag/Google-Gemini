@@ -48,3 +48,9 @@
 .sidebar .recent-entry:hover {
   background-color: #e2e6eb;
 }
+
+@media screen and (max-width: 600px) {
+  .sidebar {
+    display: none;
+  }
+}

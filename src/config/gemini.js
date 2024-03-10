@@ -10,7 +10,7 @@ import {
 const MODEL_NAME = "gemini-1.0-pro";
 const API_KEY = "AIzaSyDWgL5cCcr_3O01x1xweVR1FK-_RXoShq0";
 
-async function RunChat(prompt) {
+async function runChat(prompt) {
   const genAI = new GoogleGenerativeAI(API_KEY);
   const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
@@ -45,11 +45,13 @@ async function RunChat(prompt) {
     safetySettings,
     history: [],
   });
-
-  const result = await chat.sendMessage(prompt);
-  const response = result.response;
-  console.log(response.text());
-  return response.text();
+  try {
+    const result = await chat.sendMessage(prompt);
+    const response = result.response;
+    return response.text();
+  } catch (error) {
+    console.log(`Gemini ai not available ${error}`);
+  }
 }
 
-export default RunChat;
+export default runChat;
